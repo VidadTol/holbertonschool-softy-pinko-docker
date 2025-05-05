@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  back-end:
+    build: 
+      context: ./back-end
+      dockerfile: Dockerfile
+    image: softy-pinko-back-end:task5
+    container_name: softy-pinko-back-end-task5
+    ports:
+      - "5252"  # Port interne uniquement
+  
+  front-end:
+    build: 
+      context: ./front-end
+      dockerfile: Dockerfile
+    image: softy-pinko-front-end:task5
+    container_name: softy-pinko-front-end-task5
+    depends_on:
+      - back-end
+    ports:
+      - "9000"  # Port interne uniquement
+
+  proxy:
+    build: 
+      context: ./proxy
+      dockerfile: Dockerfile
+    image: softy-pinko-proxy:task5
+    container_name: softy-pinko-proxy-task5
+    ports:
+      - "80:80"  # Expose uniquement le proxy
+    depends_on:
+      - front-end
+      - back-end
